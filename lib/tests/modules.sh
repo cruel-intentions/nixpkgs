@@ -420,6 +420,7 @@ checkConfigOutput '^null$'          config.TYP-NUL                      ./simple
 checkConfigOutput '^{ }$'           config.TYP-ATT                      ./simple-options.nix
 checkConfigOutput '^"empty-file"$'  config.TYP-PKG.name                 ./simple-options.nix
 checkConfigOutput '^"TYP-STR"$'     config.TYP-STR                      ./simple-options.nix
+checkConfigOutput '^"MD doc"$'      options.TYP-DOC.description.text    ./simple-options.nix
 
 
 cat <<EOF
