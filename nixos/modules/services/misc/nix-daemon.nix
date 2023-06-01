@@ -407,19 +407,19 @@ lib.simpleOptions {
             ]);
           in
           { config, name, ... }:
-          {
+          lib.simpleOptions {
             options = {
-              from = mkOption {
+              from = {
                 type = referenceAttrs;
                 example = { type = "indirect"; id = "nixpkgs"; };
                 description = lib.mdDoc "The flake reference to be rewritten.";
               };
-              to = mkOption {
+              to = {
                 type = referenceAttrs;
                 example = { type = "github"; owner = "my-org"; repo = "my-nixpkgs"; };
                 description = lib.mdDoc "The flake reference {option}`from` is rewritten to.";
               };
-              flake = mkOption {
+              flake = {
                 type = types.nullOr types.attrs;
                 default = null;
                 example = literalExpression "nixpkgs";
@@ -427,7 +427,7 @@ lib.simpleOptions {
                   The flake input {option}`from` is rewritten to.
                 '';
               };
-              exact = mkOption {
+              exact = {
                 type = types.bool;
                 default = true;
                 description = lib.mdDoc ''
