@@ -110,7 +110,7 @@ let
 
 in
 
-{
+lib.simpleOptions {
   imports = [
     (mkRenamedOptionModuleWith { sinceRelease = 2003; from = [ "nix" "useChroot" ]; to = [ "nix" "useSandbox" ]; })
     (mkRenamedOptionModuleWith { sinceRelease = 2003; from = [ "nix" "chrootDirs" ]; to = [ "nix" "sandboxPaths" ]; })
@@ -122,10 +122,8 @@ in
   ###### interface
 
   options = {
-
-    nix = {
-
-      enable = mkOption {
+    nix.options = {
+      enable = {
         type = types.bool;
         default = true;
         description = lib.mdDoc ''
@@ -134,7 +132,7 @@ in
         '';
       };
 
-      package = mkOption {
+      package = {
         type = types.package;
         default = pkgs.nix;
         defaultText = literalExpression "pkgs.nix";
@@ -143,7 +141,7 @@ in
         '';
       };
 
-      distributedBuilds = mkOption {
+      distributedBuilds = {
         type = types.bool;
         default = false;
         description = lib.mdDoc ''
@@ -152,7 +150,7 @@ in
         '';
       };
 
-      daemonCPUSchedPolicy = mkOption {
+      daemonCPUSchedPolicy = {
         type = types.enum [ "other" "batch" "idle" ];
         default = "other";
         example = "batch";
@@ -182,7 +180,7 @@ in
       '';
       };
 
-      daemonIOSchedClass = mkOption {
+      daemonIOSchedClass = {
         type = types.enum [ "best-effort" "idle" ];
         default = "best-effort";
         example = "idle";
@@ -205,7 +203,7 @@ in
       '';
       };
 
-      daemonIOSchedPriority = mkOption {
+      daemonIOSchedPriority = {
         type = types.int;
         default = 4;
         example = 1;
@@ -218,17 +216,17 @@ in
         '';
       };
 
-      buildMachines = mkOption {
-        type = types.listOf (types.submodule {
+      buildMachines = {
+        listOf = {
           options = {
-            hostName = mkOption {
+            hostName = {
               type = types.str;
               example = "nixbuilder.example.org";
               description = lib.mdDoc ''
                 The hostname of the build machine.
               '';
             };
-            protocol = mkOption {
+            protocol = {
               type = types.enum [ null "ssh" "ssh-ng" ];
               default = "ssh";
               example = "ssh-ng";
@@ -241,7 +239,7 @@ in
                 without a protocol which is for example used by hydra.
               '';
             };
-            system = mkOption {
+            system = {
               type = types.nullOr types.str;
               default = null;
               example = "x86_64-linux";
@@ -252,7 +250,7 @@ in
                 both are set.
               '';
             };
-            systems = mkOption {
+            systems = {
               type = types.listOf types.str;
               default = [ ];
               example = [ "x86_64-linux" "aarch64-linux" ];
@@ -263,7 +261,7 @@ in
                 both are set.
               '';
             };
-            sshUser = mkOption {
+            sshUser = {
               type = types.nullOr types.str;
               default = null;
               example = "builder";
@@ -274,7 +272,7 @@ in
                 {option}`nix.settings.trusted-users`.
               '';
             };
-            sshKey = mkOption {
+            sshKey = {
               type = types.nullOr types.str;
               default = null;
               example = "/root/.ssh/id_buildhost_builduser";
@@ -288,7 +286,7 @@ in
                 in the local filesystem, *not* to the nix store.
               '';
             };
-            maxJobs = mkOption {
+            maxJobs = {
               type = types.int;
               default = 1;
               description = lib.mdDoc ''
@@ -298,7 +296,7 @@ in
                 machines.
               '';
             };
-            speedFactor = mkOption {
+            speedFactor = {
               type = types.int;
               default = 1;
               description = lib.mdDoc ''
@@ -307,7 +305,7 @@ in
                 builders. Higher is faster.
               '';
             };
-            mandatoryFeatures = mkOption {
+            mandatoryFeatures = {
               type = types.listOf types.str;
               default = [ ];
               example = [ "big-parallel" ];
@@ -318,7 +316,7 @@ in
                 {var}`supportedFeatures`.
               '';
             };
-            supportedFeatures = mkOption {
+            supportedFeatures = {
               type = types.listOf types.str;
               default = [ ];
               example = [ "kvm" "big-parallel" ];
@@ -328,7 +326,7 @@ in
                 list.
               '';
             };
-            publicHostKey = mkOption {
+            publicHostKey = {
               type = types.nullOr types.str;
               default = null;
               description = lib.mdDoc ''
@@ -338,7 +336,7 @@ in
               '';
             };
           };
-        });
+        };
         default = [ ];
         description = lib.mdDoc ''
           This option lists the machines to be used if distributed builds are
@@ -350,14 +348,14 @@ in
       };
 
       # Environment variables for running Nix.
-      envVars = mkOption {
+      envVars = {
         type = types.attrs;
         internal = true;
         default = { };
         description = lib.mdDoc "Environment variables used by Nix.";
       };
 
-      nrBuildUsers = mkOption {
+      nrBuildUsers = {
         type = types.int;
         description = lib.mdDoc ''
           Number of `nixbld` user accounts created to
@@ -367,7 +365,7 @@ in
         '';
       };
 
-      nixPath = mkOption {
+      nixPath = {
         type = types.listOf types.str;
         default = [
           "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
@@ -381,7 +379,7 @@ in
         '';
       };
 
-      checkConfig = mkOption {
+      checkConfig = {
         type = types.bool;
         default = true;
         description = lib.mdDoc ''
@@ -389,7 +387,7 @@ in
         '';
       };
 
-      checkAllErrors = mkOption {
+      checkAllErrors = {
         type = types.bool;
         default = true;
         description = lib.mdDoc ''
@@ -397,8 +395,8 @@ in
         '';
       };
 
-      registry = mkOption {
-        type = types.attrsOf (types.submodule (
+      registry = {
+        attrsOf = types.submodule (
           let
             referenceAttrs = with types; attrsOf (oneOf [
               str
@@ -409,19 +407,19 @@ in
             ]);
           in
           { config, name, ... }:
-          {
+          lib.simpleOptions {
             options = {
-              from = mkOption {
+              from = {
                 type = referenceAttrs;
                 example = { type = "indirect"; id = "nixpkgs"; };
                 description = lib.mdDoc "The flake reference to be rewritten.";
               };
-              to = mkOption {
+              to = {
                 type = referenceAttrs;
                 example = { type = "github"; owner = "my-org"; repo = "my-nixpkgs"; };
                 description = lib.mdDoc "The flake reference {option}`from` is rewritten to.";
               };
-              flake = mkOption {
+              flake = {
                 type = types.nullOr types.attrs;
                 default = null;
                 example = literalExpression "nixpkgs";
@@ -429,7 +427,7 @@ in
                   The flake input {option}`from` is rewritten to.
                 '';
               };
-              exact = mkOption {
+              exact = {
                 type = types.bool;
                 default = true;
                 description = lib.mdDoc ''
@@ -451,14 +449,14 @@ in
               ));
             };
           }
-        ));
+        );
         default = { };
         description = lib.mdDoc ''
           A system-wide flake registry.
         '';
       };
 
-      extraOptions = mkOption {
+      extraOptions = {
         type = types.lines;
         default = "";
         example = ''
@@ -468,191 +466,189 @@ in
         description = lib.mdDoc "Additional text appended to {file}`nix.conf`.";
       };
 
-      settings = mkOption {
-        type = types.submodule {
-          freeformType = semanticConfType;
+      settings = {
+        # freeformType = semanticConfType;  #TODO
 
-          options = {
-            max-jobs = mkOption {
-              type = types.either types.int (types.enum [ "auto" ]);
-              default = "auto";
-              example = 64;
-              description = lib.mdDoc ''
-                This option defines the maximum number of jobs that Nix will try to
-                build in parallel. The default is auto, which means it will use all
-                available logical cores. It is recommend to set it to the total
-                number of logical cores in your system (e.g., 16 for two CPUs with 4
-                cores each and hyper-threading).
-              '';
-            };
+        options = {
+          max-jobs = mkOption {
+            type = types.either types.int (types.enum [ "auto" ]);
+            default = "auto";
+            example = 64;
+            description = lib.mdDoc ''
+              This option defines the maximum number of jobs that Nix will try to
+              build in parallel. The default is auto, which means it will use all
+              available logical cores. It is recommend to set it to the total
+              number of logical cores in your system (e.g., 16 for two CPUs with 4
+              cores each and hyper-threading).
+            '';
+          };
 
-            auto-optimise-store = mkOption {
-              type = types.bool;
-              default = false;
-              example = true;
-              description = lib.mdDoc ''
-                If set to true, Nix automatically detects files in the store that have
-                identical contents, and replaces them with hard links to a single copy.
-                This saves disk space. If set to false (the default), you can still run
-                nix-store --optimise to get rid of duplicate files.
-              '';
-            };
+          auto-optimise-store = {
+            type = types.bool;
+            default = false;
+            example = true;
+            description = lib.mdDoc ''
+              If set to true, Nix automatically detects files in the store that have
+              identical contents, and replaces them with hard links to a single copy.
+              This saves disk space. If set to false (the default), you can still run
+              nix-store --optimise to get rid of duplicate files.
+            '';
+          };
 
-            cores = mkOption {
-              type = types.int;
-              default = 0;
-              example = 64;
-              description = lib.mdDoc ''
-                This option defines the maximum number of concurrent tasks during
-                one build. It affects, e.g., -j option for make.
-                The special value 0 means that the builder should use all
-                available CPU cores in the system. Some builds may become
-                non-deterministic with this option; use with care! Packages will
-                only be affected if enableParallelBuilding is set for them.
-              '';
-            };
+          cores = {
+            type = types.int;
+            default = 0;
+            example = 64;
+            description = lib.mdDoc ''
+              This option defines the maximum number of concurrent tasks during
+              one build. It affects, e.g., -j option for make.
+              The special value 0 means that the builder should use all
+              available CPU cores in the system. Some builds may become
+              non-deterministic with this option; use with care! Packages will
+              only be affected if enableParallelBuilding is set for them.
+            '';
+          };
 
-            sandbox = mkOption {
-              type = types.either types.bool (types.enum [ "relaxed" ]);
-              default = true;
-              description = lib.mdDoc ''
-                If set, Nix will perform builds in a sandboxed environment that it
-                will set up automatically for each build. This prevents impurities
-                in builds by disallowing access to dependencies outside of the Nix
-                store by using network and mount namespaces in a chroot environment.
-                This is enabled by default even though it has a possible performance
-                impact due to the initial setup time of a sandbox for each build. It
-                doesn't affect derivation hashes, so changing this option will not
-                trigger a rebuild of packages.
-              '';
-            };
+          sandbox = {
+            type = types.either types.bool (types.enum [ "relaxed" ]);
+            default = true;
+            description = lib.mdDoc ''
+              If set, Nix will perform builds in a sandboxed environment that it
+              will set up automatically for each build. This prevents impurities
+              in builds by disallowing access to dependencies outside of the Nix
+              store by using network and mount namespaces in a chroot environment.
+              This is enabled by default even though it has a possible performance
+              impact due to the initial setup time of a sandbox for each build. It
+              doesn't affect derivation hashes, so changing this option will not
+              trigger a rebuild of packages.
+            '';
+          };
 
-            extra-sandbox-paths = mkOption {
-              type = types.listOf types.str;
-              default = [ ];
-              example = [ "/dev" "/proc" ];
-              description = lib.mdDoc ''
-                Directories from the host filesystem to be included
-                in the sandbox.
-              '';
-            };
+          extra-sandbox-paths = {
+            listOf = types.str;
+            default = [ ];
+            example = [ "/dev" "/proc" ];
+            description = lib.mdDoc ''
+              Directories from the host filesystem to be included
+              in the sandbox.
+            '';
+          };
 
-            substituters = mkOption {
-              type = types.listOf types.str;
-              description = lib.mdDoc ''
-                List of binary cache URLs used to obtain pre-built binaries
-                of Nix packages.
+          substituters = {
+            listOf = types.str;
+            description = lib.mdDoc ''
+              List of binary cache URLs used to obtain pre-built binaries
+              of Nix packages.
 
-                By default https://cache.nixos.org/ is added.
-              '';
-            };
+              By default https://cache.nixos.org/ is added.
+            '';
+          };
 
-            trusted-substituters = mkOption {
-              type = types.listOf types.str;
-              default = [ ];
-              example = [ "https://hydra.nixos.org/" ];
-              description = lib.mdDoc ''
-                List of binary cache URLs that non-root users can use (in
-                addition to those specified using
-                {option}`nix.settings.substituters`) by passing
-                `--option binary-caches` to Nix commands.
-              '';
-            };
+          trusted-substituters = {
+            listOf = types.str;
+            default = [ ];
+            example = [ "https://hydra.nixos.org/" ];
+            description = lib.mdDoc ''
+              List of binary cache URLs that non-root users can use (in
+              addition to those specified using
+              {option}`nix.settings.substituters`) by passing
+              `--option binary-caches` to Nix commands.
+            '';
+          };
 
-            require-sigs = mkOption {
-              type = types.bool;
-              default = true;
-              description = lib.mdDoc ''
-                If enabled (the default), Nix will only download binaries from binary caches if
-                they are cryptographically signed with any of the keys listed in
-                {option}`nix.settings.trusted-public-keys`. If disabled, signatures are neither
-                required nor checked, so it's strongly recommended that you use only
-                trustworthy caches and https to prevent man-in-the-middle attacks.
-              '';
-            };
+          require-sigs = {
+            type = types.bool;
+            default = true;
+            description = lib.mdDoc ''
+              If enabled (the default), Nix will only download binaries from binary caches if
+              they are cryptographically signed with any of the keys listed in
+              {option}`nix.settings.trusted-public-keys`. If disabled, signatures are neither
+              required nor checked, so it's strongly recommended that you use only
+              trustworthy caches and https to prevent man-in-the-middle attacks.
+            '';
+          };
 
-            trusted-public-keys = mkOption {
-              type = types.listOf types.str;
-              example = [ "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs=" ];
-              description = lib.mdDoc ''
-                List of public keys used to sign binary caches. If
-                {option}`nix.settings.trusted-public-keys` is enabled,
-                then Nix will use a binary from a binary cache if and only
-                if it is signed by *any* of the keys
-                listed here. By default, only the key for
-                `cache.nixos.org` is included.
-              '';
-            };
+          trusted-public-keys = {
+            listOf = types.str;
+            example = [ "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs=" ];
+            description = lib.mdDoc ''
+              List of public keys used to sign binary caches. If
+              {option}`nix.settings.trusted-public-keys` is enabled,
+              then Nix will use a binary from a binary cache if and only
+              if it is signed by *any* of the keys
+              listed here. By default, only the key for
+              `cache.nixos.org` is included.
+            '';
+          };
 
-            trusted-users = mkOption {
-              type = types.listOf types.str;
-              default = [ "root" ];
-              example = [ "root" "alice" "@wheel" ];
-              description = lib.mdDoc ''
-                A list of names of users that have additional rights when
-                connecting to the Nix daemon, such as the ability to specify
-                additional binary caches, or to import unsigned NARs. You
-                can also specify groups by prefixing them with
-                `@`; for instance,
-                `@wheel` means all users in the wheel
-                group.
-              '';
-            };
+          trusted-users = {
+            listOf = types.str;
+            default = [ "root" ];
+            example = [ "root" "alice" "@wheel" ];
+            description = lib.mdDoc ''
+              A list of names of users that have additional rights when
+              connecting to the Nix daemon, such as the ability to specify
+              additional binary caches, or to import unsigned NARs. You
+              can also specify groups by prefixing them with
+              `@`; for instance,
+              `@wheel` means all users in the wheel
+              group.
+            '';
+          };
 
-            system-features = mkOption {
-              type = types.listOf types.str;
-              example = [ "kvm" "big-parallel" "gccarch-skylake" ];
-              description = lib.mdDoc ''
-                The set of features supported by the machine. Derivations
-                can express dependencies on system features through the
-                `requiredSystemFeatures` attribute.
+          system-features = {
+            listOf = types.str;
+            example = [ "kvm" "big-parallel" "gccarch-skylake" ];
+            description = lib.mdDoc ''
+              The set of features supported by the machine. Derivations
+              can express dependencies on system features through the
+              `requiredSystemFeatures` attribute.
 
-                By default, pseudo-features `nixos-test`, `benchmark`,
-                and `big-parallel` used in Nixpkgs are set, `kvm`
-                is also included if it is available.
-              '';
-            };
+              By default, pseudo-features `nixos-test`, `benchmark`,
+              and `big-parallel` used in Nixpkgs are set, `kvm`
+              is also included if it is available.
+            '';
+          };
 
-            allowed-users = mkOption {
-              type = types.listOf types.str;
-              default = [ "*" ];
-              example = [ "@wheel" "@builders" "alice" "bob" ];
-              description = lib.mdDoc ''
-                A list of names of users (separated by whitespace) that are
-                allowed to connect to the Nix daemon. As with
-                {option}`nix.settings.trusted-users`, you can specify groups by
-                prefixing them with `@`. Also, you can
-                allow all users by specifying `*`. The
-                default is `*`. Note that trusted users are
-                always allowed to connect.
-              '';
-            };
+          allowed-users = {
+            listOf = types.str;
+            default = [ "*" ];
+            example = [ "@wheel" "@builders" "alice" "bob" ];
+            description = lib.mdDoc ''
+              A list of names of users (separated by whitespace) that are
+              allowed to connect to the Nix daemon. As with
+              {option}`nix.settings.trusted-users`, you can specify groups by
+              prefixing them with `@`. Also, you can
+              allow all users by specifying `*`. The
+              default is `*`. Note that trusted users are
+              always allowed to connect.
+            '';
           };
         };
-        default = { };
-        example = literalExpression ''
-          {
-            use-sandbox = true;
-            show-trace = true;
-
-            system-features = [ "big-parallel" "kvm" "recursive-nix" ];
-            sandbox-paths = { "/bin/sh" = "''${pkgs.busybox-sandbox-shell.out}/bin/busybox"; };
-          }
-        '';
-        description = lib.mdDoc ''
-          Configuration for Nix, see
-          <https://nixos.org/manual/nix/stable/#sec-conf-file> or
-          {manpage}`nix.conf(5)` for available options.
-          The value declared here will be translated directly to the key-value pairs Nix expects.
-
-          You can use {command}`nix-instantiate --eval --strict '<nixpkgs/nixos>' -A config.nix.settings`
-          to view the current value. By default it is empty.
-
-          Nix configurations defined under {option}`nix.*` will be translated and applied to this
-          option. In addition, configuration specified in {option}`nix.extraOptions` which will be appended
-          verbatim to the resulting config file.
-        '';
       };
+      default = { };
+      example = literalExpression ''
+        {
+          use-sandbox = true;
+          show-trace = true;
+
+          system-features = [ "big-parallel" "kvm" "recursive-nix" ];
+          sandbox-paths = { "/bin/sh" = "''${pkgs.busybox-sandbox-shell.out}/bin/busybox"; };
+        }
+      '';
+      description = lib.mdDoc ''
+        Configuration for Nix, see
+        <https://nixos.org/manual/nix/stable/#sec-conf-file> or
+        {manpage}`nix.conf(5)` for available options.
+        The value declared here will be translated directly to the key-value pairs Nix expects.
+
+        You can use {command}`nix-instantiate --eval --strict '<nixpkgs/nixos>' -A config.nix.settings`
+        to view the current value. By default it is empty.
+
+        Nix configurations defined under {option}`nix.*` will be translated and applied to this
+        option. In addition, configuration specified in {option}`nix.extraOptions` which will be appended
+        verbatim to the resulting config file.
+      '';
     };
   };
 
