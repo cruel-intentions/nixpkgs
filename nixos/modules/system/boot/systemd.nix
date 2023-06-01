@@ -173,243 +173,188 @@ let
 
 in
 
-{
+lib.simpleOptions {
   ###### interface
 
-  options = {
+  options.systemd.options = {
+    package.default      = pkgs.systemd;
+    package.defaultText  = literalExpression "pkgs.systemd";
+    package.type         = types.package;
+    package.description  = lib.mdDoc "The systemd package.";
 
-    systemd.package = mkOption {
-      default = pkgs.systemd;
-      defaultText = literalExpression "pkgs.systemd";
-      type = types.package;
-      description = lib.mdDoc "The systemd package.";
-    };
+    units.description    = lib.mdDoc "Definition of systemd units.";
+    units.default        = {};
+    units.type           = systemdUtils.types.units;
 
-    systemd.units = mkOption {
-      description = lib.mdDoc "Definition of systemd units.";
-      default = {};
-      type = systemdUtils.types.units;
-    };
+    packages.default     = [];
+    packages.listOf      = types.package;
+    packages.example     = literalExpression "[ pkgs.systemd-cryptsetup-generator ]";
+    packages.description = lib.mdDoc "Packages providing systemd units and hooks.";
 
-    systemd.packages = mkOption {
-      default = [];
-      type = types.listOf types.package;
-      example = literalExpression "[ pkgs.systemd-cryptsetup-generator ]";
-      description = lib.mdDoc "Packages providing systemd units and hooks.";
-    };
+    targets.default      = {};
+    targets.type         = systemdUtils.types.targets;
+    targets.description  = lib.mdDoc "Definition of systemd target units.";
 
-    systemd.targets = mkOption {
-      default = {};
-      type = systemdUtils.types.targets;
-      description = lib.mdDoc "Definition of systemd target units.";
-    };
+    services.default     = {};
+    services.type        = systemdUtils.types.services;
+    services.description = lib.mdDoc "Definition of systemd service units.";
 
-    systemd.services = mkOption {
-      default = {};
-      type = systemdUtils.types.services;
-      description = lib.mdDoc "Definition of systemd service units.";
-    };
+    sockets.default      = {};
+    sockets.type         = systemdUtils.types.sockets;
+    sockets.description  = lib.mdDoc "Definition of systemd socket units.";
 
-    systemd.sockets = mkOption {
-      default = {};
-      type = systemdUtils.types.sockets;
-      description = lib.mdDoc "Definition of systemd socket units.";
-    };
+    timers.default       = {};
+    timers.type          = systemdUtils.types.timers;
+    timers.description   = lib.mdDoc "Definition of systemd timer units.";
 
-    systemd.timers = mkOption {
-      default = {};
-      type = systemdUtils.types.timers;
-      description = lib.mdDoc "Definition of systemd timer units.";
-    };
+    paths.default        = {};
+    paths.type           = systemdUtils.types.paths;
+    paths.description    = lib.mdDoc "Definition of systemd path units.";
 
-    systemd.paths = mkOption {
-      default = {};
-      type = systemdUtils.types.paths;
-      description = lib.mdDoc "Definition of systemd path units.";
-    };
+    mounts.default       = [];
+    mounts.type          = systemdUtils.types.mounts;
+    mounts.description   = lib.mdDoc ''
+      Definition of systemd mount units.
+      This is a list instead of an attrSet, because systemd mandates the names to be derived from
+      the 'where' attribute.
+    '';
 
-    systemd.mounts = mkOption {
-      default = [];
-      type = systemdUtils.types.mounts;
-      description = lib.mdDoc ''
-        Definition of systemd mount units.
-        This is a list instead of an attrSet, because systemd mandates the names to be derived from
-        the 'where' attribute.
-      '';
-    };
+    automounts.default     = [];
+    automounts.type        = systemdUtils.types.automounts;
+    automounts.description = lib.mdDoc ''
+      Definition of systemd automount units.
+      This is a list instead of an attrSet, because systemd mandates the names to be derived from
+      the 'where' attribute.
+    '';
 
-    systemd.automounts = mkOption {
-      default = [];
-      type = systemdUtils.types.automounts;
-      description = lib.mdDoc ''
-        Definition of systemd automount units.
-        This is a list instead of an attrSet, because systemd mandates the names to be derived from
-        the 'where' attribute.
-      '';
-    };
+    slices.default     = {};
+    slices.type        = systemdUtils.types.slices;
+    slices.description = lib.mdDoc "Definition of slice configurations.";
 
-    systemd.slices = mkOption {
-      default = {};
-      type = systemdUtils.types.slices;
-      description = lib.mdDoc "Definition of slice configurations.";
-    };
+    generators.type        = types.attrsOf types.path;
+    generators.default     = {};
+    generators.example     = { systemd-gpt-auto-generator = "/dev/null"; };
+    generators.description = lib.mdDoc ''
+      Definition of systemd generators.
+      For each `NAME = VALUE` pair of the attrSet, a link is generated from
+      `/etc/systemd/system-generators/NAME` to `VALUE`.
+    '';
 
-    systemd.generators = mkOption {
-      type = types.attrsOf types.path;
-      default = {};
-      example = { systemd-gpt-auto-generator = "/dev/null"; };
-      description = lib.mdDoc ''
-        Definition of systemd generators.
-        For each `NAME = VALUE` pair of the attrSet, a link is generated from
-        `/etc/systemd/system-generators/NAME` to `VALUE`.
-      '';
-    };
+    shutdown.attrsOf     = types.path;
+    shutdown.default     = {};
+    shutdown.description = lib.mdDoc ''
+      Definition of systemd shutdown executables.
+      For each `NAME = VALUE` pair of the attrSet, a link is generated from
+      `/etc/systemd/system-shutdown/NAME` to `VALUE`.
+    '';
 
-    systemd.shutdown = mkOption {
-      type = types.attrsOf types.path;
-      default = {};
-      description = lib.mdDoc ''
-        Definition of systemd shutdown executables.
-        For each `NAME = VALUE` pair of the attrSet, a link is generated from
-        `/etc/systemd/system-shutdown/NAME` to `VALUE`.
-      '';
-    };
+    defaultUnit.default     = "multi-user.target";
+    defaultUnit.type        = types.str;
+    defaultUnit.description = lib.mdDoc "Default unit started when the system boots.";
 
-    systemd.defaultUnit = mkOption {
-      default = "multi-user.target";
-      type = types.str;
-      description = lib.mdDoc "Default unit started when the system boots.";
-    };
+    ctrlAltDelUnit.default     = "reboot.target";
+    ctrlAltDelUnit.type        = types.str;
+    ctrlAltDelUnit.example     = "poweroff.target";
+    ctrlAltDelUnit.description = lib.mdDoc ''
+      Target that should be started when Ctrl-Alt-Delete is pressed.
+    '';
 
-    systemd.ctrlAltDelUnit = mkOption {
-      default = "reboot.target";
-      type = types.str;
-      example = "poweroff.target";
-      description = lib.mdDoc ''
-        Target that should be started when Ctrl-Alt-Delete is pressed.
-      '';
-    };
+    globalEnvironment.attrsOf     = with types; nullOr (oneOf [ str path package ]);
+    globalEnvironment.default     = {};
+    globalEnvironment.example     = { TZ = "CET"; };
+    globalEnvironment.description = lib.mdDoc ''
+      Environment variables passed to *all* systemd units.
+    '';
 
-    systemd.globalEnvironment = mkOption {
-      type = with types; attrsOf (nullOr (oneOf [ str path package ]));
-      default = {};
-      example = { TZ = "CET"; };
-      description = lib.mdDoc ''
-        Environment variables passed to *all* systemd units.
-      '';
-    };
+    managerEnvironment.attrsOf    = with types; nullOr (oneOf [ str path package ]);
+    managerEnvironment.default    = {};
+    managerEnvironment.example    = { SYSTEMD_LOG_LEVEL = "debug"; };
+    managerEnvironment.description = lib.mdDoc ''
+      Environment variables of PID 1. These variables are
+      *not* passed to started units.
+    '';
 
-    systemd.managerEnvironment = mkOption {
-      type = with types; attrsOf (nullOr (oneOf [ str path package ]));
-      default = {};
-      example = { SYSTEMD_LOG_LEVEL = "debug"; };
-      description = lib.mdDoc ''
-        Environment variables of PID 1. These variables are
-        *not* passed to started units.
-      '';
-    };
+    enableCgroupAccounting.default     = true;
+    enableCgroupAccounting.type        = types.bool;
+    enableCgroupAccounting.description = lib.mdDoc ''
+      Whether to enable cgroup accounting.
+    '';
 
-    systemd.enableCgroupAccounting = mkOption {
-      default = true;
-      type = types.bool;
-      description = lib.mdDoc ''
-        Whether to enable cgroup accounting.
-      '';
-    };
+    enableUnifiedCgroupHierarchy.default     = true;
+    enableUnifiedCgroupHierarchy.type        = types.bool;
+    enableUnifiedCgroupHierarchy.description = lib.mdDoc ''
+      Whether to enable the unified cgroup hierarchy (cgroupsv2).
+    '';
 
-    systemd.enableUnifiedCgroupHierarchy = mkOption {
-      default = true;
-      type = types.bool;
-      description = lib.mdDoc ''
-        Whether to enable the unified cgroup hierarchy (cgroupsv2).
-      '';
-    };
+    extraConfig.default     = "";
+    extraConfig.type        = types.lines;
+    extraConfig.example     = "DefaultLimitCORE=infinity";
+    extraConfig.description = lib.mdDoc ''
+      Extra config options for systemd. See systemd-system.conf(5) man page
+      for available options.
+    '';
 
-    systemd.extraConfig = mkOption {
-      default = "";
-      type = types.lines;
-      example = "DefaultLimitCORE=infinity";
-      description = lib.mdDoc ''
-        Extra config options for systemd. See systemd-system.conf(5) man page
-        for available options.
-      '';
-    };
+    sleep.options.extraConfig.default     = "";
+    sleep.options.extraConfig.type        = types.lines;
+    sleep.options.extraConfig.example     = "HibernateDelaySec=1h";
+    sleep.options.extraConfig.description = lib.mdDoc ''
+      Extra config options for systemd sleep state logic.
+      See sleep.conf.d(5) man page for available options.
+    '';
 
-    systemd.sleep.extraConfig = mkOption {
-      default = "";
-      type = types.lines;
-      example = "HibernateDelaySec=1h";
-      description = lib.mdDoc ''
-        Extra config options for systemd sleep state logic.
-        See sleep.conf.d(5) man page for available options.
-      '';
-    };
+    additionalUpstreamSystemUnits.default     = [ ];
+    additionalUpstreamSystemUnits.listOf      = types.str;
+    additionalUpstreamSystemUnits.example     = [ "debug-shell.service" "systemd-quotacheck.service" ];
+    additionalUpstreamSystemUnits.description = lib.mdDoc ''
+      Additional units shipped with systemd that shall be enabled.
+    '';
 
-    systemd.additionalUpstreamSystemUnits = mkOption {
-      default = [ ];
-      type = types.listOf types.str;
-      example = [ "debug-shell.service" "systemd-quotacheck.service" ];
-      description = lib.mdDoc ''
-        Additional units shipped with systemd that shall be enabled.
-      '';
-    };
+    suppressedSystemUnits.default     = [ ];
+    suppressedSystemUnits.listOf      = types.str;
+    suppressedSystemUnits.example     = [ "systemd-backlight@.service" ];
+    suppressedSystemUnits.description = lib.mdDoc ''
+      A list of units to skip when generating system systemd configuration directory. This has
+      priority over upstream units, {option}`systemd.units`, and
+      {option}`systemd.additionalUpstreamSystemUnits`. The main purpose of this is to
+      prevent a upstream systemd unit from being added to the initrd with any modifications made to it
+      by other NixOS modules.
+    '';
 
-    systemd.suppressedSystemUnits = mkOption {
-      default = [ ];
-      type = types.listOf types.str;
-      example = [ "systemd-backlight@.service" ];
-      description = lib.mdDoc ''
-        A list of units to skip when generating system systemd configuration directory. This has
-        priority over upstream units, {option}`systemd.units`, and
-        {option}`systemd.additionalUpstreamSystemUnits`. The main purpose of this is to
-        prevent a upstream systemd unit from being added to the initrd with any modifications made to it
-        by other NixOS modules.
-      '';
-    };
+    watchdog.options.device.type        = types.nullOr types.path;
+    watchdog.options.device.default     = null;
+    watchdog.options.device.example     = "/dev/watchdog";
+    watchdog.options.device.description = lib.mdDoc ''
+      The path to a hardware watchdog device which will be managed by systemd.
+      If not specified, systemd will default to /dev/watchdog.
+    '';
 
-    systemd.watchdog.device = mkOption {
-      type = types.nullOr types.path;
-      default = null;
-      example = "/dev/watchdog";
-      description = lib.mdDoc ''
-        The path to a hardware watchdog device which will be managed by systemd.
-        If not specified, systemd will default to /dev/watchdog.
-      '';
-    };
+    watchdog.options.runtimeTime.type        = types.nullOr types.str;
+    watchdog.options.runtimeTime.default     = null;
+    watchdog.options.runtimeTime.example     = "30s";
+    watchdog.options.runtimeTime.description = lib.mdDoc ''
+      The amount of time which can elapse before a watchdog hardware device
+      will automatically reboot the system. Valid time units include "ms",
+      "s", "min", "h", "d", and "w".
+    '';
 
-    systemd.watchdog.runtimeTime = mkOption {
-      type = types.nullOr types.str;
-      default = null;
-      example = "30s";
-      description = lib.mdDoc ''
-        The amount of time which can elapse before a watchdog hardware device
-        will automatically reboot the system. Valid time units include "ms",
-        "s", "min", "h", "d", and "w".
-      '';
-    };
+    watchdog.options.rebootTime.type        = types.nullOr types.str;
+    watchdog.options.rebootTime.default     = null;
+    watchdog.options.rebootTime.example     = "10m";
+    watchdog.options.rebootTime.description = lib.mdDoc ''
+      The amount of time which can elapse after a reboot has been triggered
+      before a watchdog hardware device will automatically reboot the system.
+      Valid time units include "ms", "s", "min", "h", "d", and "w".
+    '';
 
-    systemd.watchdog.rebootTime = mkOption {
-      type = types.nullOr types.str;
-      default = null;
-      example = "10m";
-      description = lib.mdDoc ''
-        The amount of time which can elapse after a reboot has been triggered
-        before a watchdog hardware device will automatically reboot the system.
-        Valid time units include "ms", "s", "min", "h", "d", and "w".
-      '';
-    };
-
-    systemd.watchdog.kexecTime = mkOption {
-      type = types.nullOr types.str;
-      default = null;
-      example = "10m";
-      description = lib.mdDoc ''
-        The amount of time which can elapse when kexec is being executed before
-        a watchdog hardware device will automatically reboot the system. This
-        option should only be enabled if reloadTime is also enabled. Valid
-        time units include "ms", "s", "min", "h", "d", and "w".
-      '';
-    };
+    watchdog.options.kexecTime.type        = types.nullOr types.str;
+    watchdog.options.kexecTime.default     = null;
+    watchdog.options.kexecTime.example     = "10m";
+    watchdog.options.kexecTime.description = lib.mdDoc ''
+      The amount of time which can elapse when kexec is being executed before
+      a watchdog hardware device will automatically reboot the system. This
+      option should only be enabled if reloadTime is also enabled. Valid
+      time units include "ms", "s", "min", "h", "d", and "w".
+    '';
   };
 
 
