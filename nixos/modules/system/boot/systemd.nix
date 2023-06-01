@@ -179,7 +179,6 @@ lib.simpleOptions {
   options.systemd.options = {
     package.default      = pkgs.systemd;
     package.defaultText  = literalExpression "pkgs.systemd";
-    package.type         = types.package;
     package.description  = lib.mdDoc "The systemd package.";
 
     units.description    = lib.mdDoc "Definition of systemd units.";
@@ -231,7 +230,7 @@ lib.simpleOptions {
     slices.type        = systemdUtils.types.slices;
     slices.description = lib.mdDoc "Definition of slice configurations.";
 
-    generators.type        = types.attrsOf types.path;
+    generators.attrsOf     = types.path;
     generators.default     = {};
     generators.example     = { systemd-gpt-auto-generator = "/dev/null"; };
     generators.description = lib.mdDoc ''
@@ -249,11 +248,9 @@ lib.simpleOptions {
     '';
 
     defaultUnit.default     = "multi-user.target";
-    defaultUnit.type        = types.str;
     defaultUnit.description = lib.mdDoc "Default unit started when the system boots.";
 
     ctrlAltDelUnit.default     = "reboot.target";
-    ctrlAltDelUnit.type        = types.str;
     ctrlAltDelUnit.example     = "poweroff.target";
     ctrlAltDelUnit.description = lib.mdDoc ''
       Target that should be started when Ctrl-Alt-Delete is pressed.
@@ -275,13 +272,11 @@ lib.simpleOptions {
     '';
 
     enableCgroupAccounting.default     = true;
-    enableCgroupAccounting.type        = types.bool;
     enableCgroupAccounting.description = lib.mdDoc ''
       Whether to enable cgroup accounting.
     '';
 
     enableUnifiedCgroupHierarchy.default     = true;
-    enableUnifiedCgroupHierarchy.type        = types.bool;
     enableUnifiedCgroupHierarchy.description = lib.mdDoc ''
       Whether to enable the unified cgroup hierarchy (cgroupsv2).
     '';
@@ -320,7 +315,7 @@ lib.simpleOptions {
       by other NixOS modules.
     '';
 
-    watchdog.options.device.type        = types.nullOr types.path;
+    watchdog.options.device.nullOr      = types.path;
     watchdog.options.device.default     = null;
     watchdog.options.device.example     = "/dev/watchdog";
     watchdog.options.device.description = lib.mdDoc ''
@@ -328,7 +323,7 @@ lib.simpleOptions {
       If not specified, systemd will default to /dev/watchdog.
     '';
 
-    watchdog.options.runtimeTime.type        = types.nullOr types.str;
+    watchdog.options.runtimeTime.nullOr      = types.str;
     watchdog.options.runtimeTime.default     = null;
     watchdog.options.runtimeTime.example     = "30s";
     watchdog.options.runtimeTime.description = lib.mdDoc ''
@@ -337,7 +332,7 @@ lib.simpleOptions {
       "s", "min", "h", "d", and "w".
     '';
 
-    watchdog.options.rebootTime.type        = types.nullOr types.str;
+    watchdog.options.rebootTime.nullOr      = types.str;
     watchdog.options.rebootTime.default     = null;
     watchdog.options.rebootTime.example     = "10m";
     watchdog.options.rebootTime.description = lib.mdDoc ''
@@ -346,7 +341,7 @@ lib.simpleOptions {
       Valid time units include "ms", "s", "min", "h", "d", and "w".
     '';
 
-    watchdog.options.kexecTime.type        = types.nullOr types.str;
+    watchdog.options.kexecTime.nullOr        = types.str;
     watchdog.options.kexecTime.default     = null;
     watchdog.options.kexecTime.example     = "10m";
     watchdog.options.kexecTime.description = lib.mdDoc ''

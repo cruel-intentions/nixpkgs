@@ -124,7 +124,6 @@ lib.simpleOptions {
   options = {
     nix.options = {
       enable = {
-        type = types.bool;
         default = true;
         description = lib.mdDoc ''
           Whether to enable Nix.
@@ -133,7 +132,6 @@ lib.simpleOptions {
       };
 
       package = {
-        type = types.package;
         default = pkgs.nix;
         defaultText = literalExpression "pkgs.nix";
         description = lib.mdDoc ''
@@ -142,7 +140,6 @@ lib.simpleOptions {
       };
 
       distributedBuilds = {
-        type = types.bool;
         default = false;
         description = lib.mdDoc ''
           Whether to distribute builds to the machines listed in
@@ -204,7 +201,6 @@ lib.simpleOptions {
       };
 
       daemonIOSchedPriority = {
-        type = types.int;
         default = 4;
         example = 1;
         description = lib.mdDoc ''
@@ -240,7 +236,7 @@ lib.simpleOptions {
               '';
             };
             system = {
-              type = types.nullOr types.str;
+              nullOr = types.str;
               default = null;
               example = "x86_64-linux";
               description = lib.mdDoc ''
@@ -262,7 +258,7 @@ lib.simpleOptions {
               '';
             };
             sshUser = {
-              type = types.nullOr types.str;
+              nullOr = types.str;
               default = null;
               example = "builder";
               description = lib.mdDoc ''
@@ -273,7 +269,7 @@ lib.simpleOptions {
               '';
             };
             sshKey = {
-              type = types.nullOr types.str;
+              nullOr = types.str;
               default = null;
               example = "/root/.ssh/id_buildhost_builduser";
               description = lib.mdDoc ''
@@ -287,7 +283,6 @@ lib.simpleOptions {
               '';
             };
             maxJobs = {
-              type = types.int;
               default = 1;
               description = lib.mdDoc ''
                 The number of concurrent jobs the build machine supports. The
@@ -297,7 +292,6 @@ lib.simpleOptions {
               '';
             };
             speedFactor = {
-              type = types.int;
               default = 1;
               description = lib.mdDoc ''
                 The relative speed of this builder. This is an arbitrary integer
@@ -327,7 +321,7 @@ lib.simpleOptions {
               '';
             };
             publicHostKey = {
-              type = types.nullOr types.str;
+              nullOr = types.str;
               default = null;
               description = lib.mdDoc ''
                 The (base64-encoded) public host key of this builder. The field
@@ -380,7 +374,6 @@ lib.simpleOptions {
       };
 
       checkConfig = {
-        type = types.bool;
         default = true;
         description = lib.mdDoc ''
           If enabled, checks that Nix can parse the generated nix.conf.
@@ -388,7 +381,6 @@ lib.simpleOptions {
       };
 
       checkAllErrors = {
-        type = types.bool;
         default = true;
         description = lib.mdDoc ''
           If enabled, checks the nix.conf parsing for any kind of error. When disabled, checks only for unknown settings.
@@ -420,7 +412,7 @@ lib.simpleOptions {
                 description = lib.mdDoc "The flake reference {option}`from` is rewritten to.";
               };
               flake = {
-                type = types.nullOr types.attrs;
+                nullOr = types.attrs;
                 default = null;
                 example = literalExpression "nixpkgs";
                 description = lib.mdDoc ''
@@ -428,7 +420,6 @@ lib.simpleOptions {
                 '';
               };
               exact = {
-                type = types.bool;
                 default = true;
                 description = lib.mdDoc ''
                   Whether the {option}`from` reference needs to match exactly. If set,
@@ -484,7 +475,6 @@ lib.simpleOptions {
           };
 
           auto-optimise-store = {
-            type = types.bool;
             default = false;
             example = true;
             description = lib.mdDoc ''
@@ -496,7 +486,6 @@ lib.simpleOptions {
           };
 
           cores = {
-            type = types.int;
             default = 0;
             example = 64;
             description = lib.mdDoc ''
@@ -557,7 +546,6 @@ lib.simpleOptions {
           };
 
           require-sigs = {
-            type = types.bool;
             default = true;
             description = lib.mdDoc ''
               If enabled (the default), Nix will only download binaries from binary caches if

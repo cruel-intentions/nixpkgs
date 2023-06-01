@@ -412,6 +412,15 @@ checkConfigOutput '^"OPT-OPT-LST"$' config.OPT.OPT-OPT.OPT-OPT-LST.0    ./simple
 checkConfigOutput '^"OPT-OPT-TYP"$' config.OPT.OPT-OPT.OPT-OPT-TYP      ./simple-options.nix
 checkConfigOutput '^"OPT-TYP"$'     config.OPT.OPT-TYP                  ./simple-options.nix
 checkConfigOutput '^"TYP"$'         config.TYP                          ./simple-options.nix
+checkConfigOutput '^true$'          config.TYP-BOO                      ./simple-options.nix
+checkConfigOutput '^0$'             config.TYP-FLT                      ./simple-options.nix
+checkConfigOutput '^0$'             config.TYP-INT                      ./simple-options.nix
+checkConfigOutput '^"TYP-LST"$'     config.TYP-LST.0                    ./simple-options.nix
+checkConfigOutput '^null$'          config.TYP-NUL                      ./simple-options.nix
+checkConfigOutput '^{ }$'           config.TYP-ATT                      ./simple-options.nix
+checkConfigOutput '^"empty-file"$'  config.TYP-PKG.name                 ./simple-options.nix
+checkConfigOutput '^"TYP-STR"$'     config.TYP-STR                      ./simple-options.nix
+
 
 cat <<EOF
 ====== module tests ======

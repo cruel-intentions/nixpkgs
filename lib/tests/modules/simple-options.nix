@@ -143,4 +143,29 @@ lib.simpleOptions {
   options.OPT.options.OPT-OPT.options.OPT-OPT-LST.description = "Third level list of strings str";
   options.OPT.options.OPT-OPT.options.OPT-OPT-LST.listOf      = lib.types.str;
   options.OPT.options.OPT-OPT.options.OPT-OPT-LST.example     = [];
+
+  # Inter Type
+  options.TYP-BOO.default     = true;
+  options.TYP-BOO.description = "bool option";
+
+  options.TYP-FLT.default     =  0.0;
+  options.TYP-FLT.description = "float option";
+
+  options.TYP-INT.default     =  0;
+  options.TYP-INT.description = "int option";
+
+  options.TYP-LST.default     =  [ "TYP-LST" ];
+  options.TYP-LST.description = "list option";
+
+  options.TYP-NUL.default     =  null;
+  options.TYP-NUL.description = "null option";
+
+  options.TYP-ATT.default     =  {};
+  options.TYP-ATT.description = "attr option";
+
+  options.TYP-PKG.default     =  (import <nixpkgs> {}).emptyFile;
+  options.TYP-PKG.description = "pkg option";
+
+  options.TYP-STR.default     = "TYP-STR";
+  options.TYP-STR.description = "string option";
 }
