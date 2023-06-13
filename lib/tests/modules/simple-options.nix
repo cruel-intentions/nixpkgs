@@ -32,6 +32,11 @@ lib.simpleOptions {
   options.ATT.description = "attrset of strings";
   options.ATT.example     = {};
 
+  options.ENM.default     = "ENM";
+  options.ENM.description = "enum option example";
+  options.ENM.example     = "MNE";
+  options.ENM.enum        = [ "NME" "ENM" ];
+
   options.LST.default     = [ "LST" ];
   options.LST.description = "list of string";
   options.LST.example     = [];
@@ -48,6 +53,10 @@ lib.simpleOptions {
   options.ATT-ATT.description  = "attrset of attrset";
   options.ATT-ATT.example      = {};
 
+  options.ATT-ENM.default      = {};
+  options.ATT-ENM.description  = "attrset of enums";
+  options.ATT-ENM.example      = {};
+
   options.ATT-LST.default      = {};
   options.ATT-LST.description  = "attrset of lists";
   options.ATT-LST.example      = {};
@@ -56,6 +65,11 @@ lib.simpleOptions {
   options.ATT-ATT.attrsOf.description  = "attrset of strings";
   options.ATT-ATT.attrsOf.example      = {};
   options.ATT-ATT.attrsOf.attrsOf      = lib.types.str;
+
+  options.ATT-ENM.attrsOf.default      = "ATT-ENM";
+  options.ATT-ENM.attrsOf.description  = "attrset of strings";
+  options.ATT-ENM.attrsOf.example      = "ATT-MNE";
+  options.ATT-ENM.attrsOf.enum         = ["ATT-MNE" "ATT-ENM"];
 
   options.ATT-LST.attrsOf.default      = {};
   options.ATT-LST.attrsOf.description  = "list of strings";
@@ -77,27 +91,36 @@ lib.simpleOptions {
   options.LST-ATT.description   = "list of attrset";
   options.LST-ATT.example       = [];
 
-  options.LST-ATT.listOf.default      = [];
-  options.LST-ATT.listOf.description  = "attrset of strings";
-  options.LST-ATT.listOf.example      = [];
-  options.LST-ATT.listOf.attrsOf      = lib.types.str;
+  options.LST-ENM.default       = [];
+  options.LST-ENM.description   = "list of enum";
+  options.LST-ENM.example       = [];
 
   options.LST-LST.default       = {};
   options.LST-LST.description   = "list of lists";
   options.LST-LST.example       = {};
 
-  options.LST-LST.listOf.default      = {};
-  options.LST-LST.listOf.description  = "list of strings";
-  options.LST-LST.listOf.example      = {};
-  options.LST-LST.listOf.listOf       = lib.types.str;
-
   options.LST-OPT.default       = {};
   options.LST-OPT.description   = "list of options";
   options.LST-OPT.example       = {};
 
-  options.LST-OPT.listOf.default      = {};
-  options.LST-OPT.listOf.description  = "options with one attr";
-  options.LST-OPT.listOf.example      = {};
+  options.LST-ATT.listOf.default     = [];
+  options.LST-ATT.listOf.description = "attrset of strings";
+  options.LST-ATT.listOf.example     = [];
+  options.LST-ATT.listOf.attrsOf     = lib.types.str;
+
+  options.LST-ENM.listOf.default     = [ "LST-ENM" "LST-MNE" ];
+  options.LST-ENM.listOf.description = "list of enum";
+  options.LST-ENM.listOf.example     = [ "LST-MNE" "LST-ENM" ];
+  options.LST-ENM.listOf.enum        = [ "LST-MNE" "LST-ENM" ];
+
+  options.LST-LST.listOf.default     = [];
+  options.LST-LST.listOf.description = "list of strings";
+  options.LST-LST.listOf.example     = [];
+  options.LST-LST.listOf.listOf      = lib.types.str;
+
+  options.LST-OPT.listOf.default     = [];
+  options.LST-OPT.listOf.description = "options with one attr";
+  options.LST-OPT.listOf.example     = [];
 
   options.LST-OPT.listOf.options.LST-OPT-TYP.default     = "";
   options.LST-OPT.listOf.options.LST-OPT-TYP.description = "option of options of lists";
@@ -110,15 +133,15 @@ lib.simpleOptions {
   options.OPT.example     = {};
   options.OPT.description = "options holder";
 
-  options.OPT.options.OPT-TYP.default     = "OPT-TYP";
-  options.OPT.options.OPT-TYP.description = "second level str";
-  options.OPT.options.OPT-TYP.type        = lib.types.str;
-  options.OPT.options.OPT-TYP.example     = "some string";
-
   options.OPT.options.OPT-ATT.default     = { test = "OPT-ATT"; };
   options.OPT.options.OPT-ATT.description = "second level attrset of strings";
   options.OPT.options.OPT-ATT.attrsOf     = lib.types.str;
   options.OPT.options.OPT-ATT.example     = {};
+
+  options.OPT.options.OPT-ENM.default     = "OPT-ENM";
+  options.OPT.options.OPT-ENM.description = "second level enum";
+  options.OPT.options.OPT-ENM.enum        = [ "OTP-MNE" "OPT-ENM" ];
+  options.OPT.options.OPT-ENM.example     = "OPT-MNE";
 
   options.OPT.options.OPT-LST.default     = [ "OPT-LST" ];
   options.OPT.options.OPT-LST.description = "second level list of strings";
@@ -129,20 +152,30 @@ lib.simpleOptions {
   options.OPT.options.OPT-OPT.example     = {};
   options.OPT.options.OPT-OPT.description = "second level options holder";
 
-  options.OPT.options.OPT-OPT.options.OPT-OPT-TYP.default     = "OPT-OPT-TYP";
-  options.OPT.options.OPT-OPT.options.OPT-OPT-TYP.description = "third level str";
-  options.OPT.options.OPT-OPT.options.OPT-OPT-TYP.type        = lib.types.str;
-  options.OPT.options.OPT-OPT.options.OPT-OPT-TYP.example     = "some string";
+  options.OPT.options.OPT-TYP.default     = "OPT-TYP";
+  options.OPT.options.OPT-TYP.description = "second level str";
+  options.OPT.options.OPT-TYP.type        = lib.types.str;
+  options.OPT.options.OPT-TYP.example     = "some string";
 
   options.OPT.options.OPT-OPT.options.OPT-OPT-ATT.default     =  { test = "OPT-OPT-ATT"; };
   options.OPT.options.OPT-OPT.options.OPT-OPT-ATT.description = "Third level hasmap of strings str";
   options.OPT.options.OPT-OPT.options.OPT-OPT-ATT.attrsOf     = lib.types.str;
   options.OPT.options.OPT-OPT.options.OPT-OPT-ATT.example     = {};
 
+  options.OPT.options.OPT-OPT.options.OPT-OPT-ENM.default     = "OPT-OPT-ENM";
+  options.OPT.options.OPT-OPT.options.OPT-OPT-ENM.description = "third level str";
+  options.OPT.options.OPT-OPT.options.OPT-OPT-ENM.enum        = [ "OPT-OPT-MNE" "OPT-OPT-ENM" ];
+  options.OPT.options.OPT-OPT.options.OPT-OPT-ENM.example     = "OPT-OPT-MNE";
+
   options.OPT.options.OPT-OPT.options.OPT-OPT-LST.default     = [ "OPT-OPT-LST" ];
   options.OPT.options.OPT-OPT.options.OPT-OPT-LST.description = "Third level list of strings str";
   options.OPT.options.OPT-OPT.options.OPT-OPT-LST.listOf      = lib.types.str;
   options.OPT.options.OPT-OPT.options.OPT-OPT-LST.example     = [];
+
+  options.OPT.options.OPT-OPT.options.OPT-OPT-TYP.default     = "OPT-OPT-TYP";
+  options.OPT.options.OPT-OPT.options.OPT-OPT-TYP.description = "third level str";
+  options.OPT.options.OPT-OPT.options.OPT-OPT-TYP.type        = lib.types.str;
+  options.OPT.options.OPT-OPT.options.OPT-OPT-TYP.example     = "some string";
 
   # Inter Type
   options.TYP-BOO.default     = true;

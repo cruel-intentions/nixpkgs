@@ -3,6 +3,7 @@
   attrAttr ? "attrsOf",
   debug    ? false,
   descAttr ? "mdDoc",
+  enumAttr ? "enum",
   listAttr ? "listOf",
   nullAttr ? "nullOr",
   subMAttr ? "options",
@@ -12,7 +13,7 @@
 module:
 let
   inherit (builtins) attrNames concatStringsSep mapAttrs throw trace typeOf;
-  inherit (lib.types) lazyAttrsOf listOf submodule anything attrs bool float int nullOr package path str;
+  inherit (lib.types) lazyAttrsOf listOf submodule anything attrs bool enum float int nullOr package path str;
   mkOptionW = breadcrumb: optName: optDef:
     let result = lib.mkOption (toOption breadcrumb optName optDef);
     in
@@ -41,6 +42,8 @@ let
         then type else
       if type ? ${typeAttr}
         then type.type else
+      if type ? ${enumAttr}
+        then enum type.${enumAttr} else
       if type ? ${attrAttr}
         then lazyAttrsOf (toType    (breadcrumb ++ [attrAttr]) type."${attrAttr}") else
       if type ? ${listAttr}
@@ -91,6 +94,8 @@ let
         then throw ''optDef must be a attrset, instead it is a ${typeOf optDef}, breadcrumb: ${concatStringsSep "." breadcrumb}, optName: ${optName}'' else
       if optDef ? ${typeAttr}
         then removeAttrs optDef [descAttr typeAttr] // { type = optDef.${typeAttr}; } else
+      if optDef ? ${enumAttr}
+        then removeAttrs optDef [descAttr enumAttr] // { type = enum optDef.${enumAttr}; } else
       if optDef ? ${attrAttr}
         then removeAttrs optDef [descAttr attrAttr] // { type = lazyAttrsOf (toType    (breadcrumb ++ [optName attrAttr]) optDef.${attrAttr}); } else
       if optDef ? ${listAttr}
