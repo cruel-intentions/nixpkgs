@@ -1,12 +1,12 @@
 {
   lib,
-  attrAttr  ? "attrsOf",
-  listAttr  ? "listOf",
-  nullAttr  ? "nullOr",
-  subMAttr  ? "options",
-  typeAttr  ? "type",
-  docAttr   ? "mdDoc",
-  debug     ? false,
+  attrAttr ? "attrsOf",
+  debug    ? false,
+  descAttr ? "mdDoc",
+  listAttr ? "listOf",
+  nullAttr ? "nullOr",
+  subMAttr ? "options",
+  typeAttr ? "type",
   ...
 }:
 module:
@@ -90,21 +90,21 @@ let
       if typeOf optDef     != "set"
         then throw ''optDef must be a attrset, instead it is a ${typeOf optDef}, breadcrumb: ${concatStringsSep "." breadcrumb}, optName: ${optName}'' else
       if optDef ? ${typeAttr}
-        then removeAttrs optDef [docAttr typeAttr] // { type = optDef.${typeAttr}; } else
+        then removeAttrs optDef [descAttr typeAttr] // { type = optDef.${typeAttr}; } else
       if optDef ? ${attrAttr}
-        then removeAttrs optDef [docAttr attrAttr] // { type = lazyAttrsOf (toType    (breadcrumb ++ [optName attrAttr]) optDef.${attrAttr}); } else
+        then removeAttrs optDef [descAttr attrAttr] // { type = lazyAttrsOf (toType    (breadcrumb ++ [optName attrAttr]) optDef.${attrAttr}); } else
       if optDef ? ${listAttr}
-        then removeAttrs optDef [docAttr listAttr] // { type = listOf      (toType    (breadcrumb ++ [optName listAttr]) optDef.${listAttr}); } else
+        then removeAttrs optDef [descAttr listAttr] // { type = listOf      (toType    (breadcrumb ++ [optName listAttr]) optDef.${listAttr}); } else
       if optDef ? ${nullAttr}
-        then removeAttrs optDef [docAttr nullAttr] // { type = nullOr      (toType    (breadcrumb ++ [optName nullAttr]) optDef.${nullAttr}); } else
+        then removeAttrs optDef [descAttr nullAttr] // { type = nullOr      (toType    (breadcrumb ++ [optName nullAttr]) optDef.${nullAttr}); } else
       if optDef ? ${subMAttr}
-        then removeAttrs optDef [docAttr subMAttr] // { type = submodule   (toOptions (breadcrumb ++ [optName subMAttr]) optDef.${subMAttr}); } else
+        then removeAttrs optDef [descAttr subMAttr] // { type = submodule   (toOptions (breadcrumb ++ [optName subMAttr]) optDef.${subMAttr}); } else
       if optDef ? default
-        then removeAttrs optDef [docAttr]          // { type = toType                 (breadcrumb ++ [optName]         ) optDef             ; } else
+        then removeAttrs optDef [descAttr]          // { type = toType                 (breadcrumb ++ [optName]         ) optDef             ; } else
         throw ''${concatStringsSep "." (breadcrumb ++ optName)} has no attr _type|${typeAttr}|${attrAttr}|${listAttr}|${nullAttr}|${subMAttr}'';
         result' = result // (
-          if  optDef ? ${docAttr}
-          then { description = lib.mdDoc optDef.${docAttr}; }
+          if  optDef ? ${descAttr}
+          then { description = lib.mdDoc optDef.${descAttr}; }
           else  {});
     in
       if debug then
