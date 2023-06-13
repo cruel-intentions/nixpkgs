@@ -42,6 +42,11 @@ lib.simpleOptions {
   options.LST.example     = [];
   options.LST.listOf      = lib.types.str;
 
+  options.ONE.default     = "ONE";
+  options.ONE.description = "oneOf option example";
+  options.ONE.example     = "some string";
+  options.ONE.oneOf       = [ lib.types.str lib.types.int ];
+
   options.TYP.default     = "TYP";
   options.TYP.description = "string option example";
   options.TYP.example     = "some string";
@@ -61,6 +66,10 @@ lib.simpleOptions {
   options.ATT-LST.description  = "attrset of lists";
   options.ATT-LST.example      = {};
 
+  options.ATT-ONE.default      = {};
+  options.ATT-ONE.description  = "attrset of one of";
+  options.ATT-ONE.example      = {};
+
   options.ATT-ATT.attrsOf.default      = {};
   options.ATT-ATT.attrsOf.description  = "attrset of strings";
   options.ATT-ATT.attrsOf.example      = {};
@@ -75,6 +84,11 @@ lib.simpleOptions {
   options.ATT-LST.attrsOf.description  = "list of strings";
   options.ATT-LST.attrsOf.example      = {};
   options.ATT-LST.attrsOf.listOf       = lib.types.str;
+
+  options.ATT-ONE.attrsOf.default      = "ATT-ONE";
+  options.ATT-ONE.attrsOf.description  = "attrset of oneof";
+  options.ATT-ONE.attrsOf.example      = 1;
+  options.ATT-ONE.attrsOf.oneOf        = [ lib.types.str lib.types.int ];
 
   options.ATT-OPT.attrsOf.default      = {};
   options.ATT-OPT.attrsOf.description  = "options with one attr";
@@ -99,6 +113,10 @@ lib.simpleOptions {
   options.LST-LST.description   = "list of lists";
   options.LST-LST.example       = {};
 
+  options.LST-ONE.default       = [];
+  options.LST-ONE.description   = "list of one of";
+  options.LST-ONE.example       = [];
+
   options.LST-OPT.default       = {};
   options.LST-OPT.description   = "list of options";
   options.LST-OPT.example       = {};
@@ -117,6 +135,11 @@ lib.simpleOptions {
   options.LST-LST.listOf.description = "list of strings";
   options.LST-LST.listOf.example     = [];
   options.LST-LST.listOf.listOf      = lib.types.str;
+
+  options.LST-ONE.listOf.default     = [ "LST-ONE" 1 ];
+  options.LST-ONE.listOf.description = "list of one of";
+  options.LST-ONE.listOf.example     = [ 1 "LST-ONE" ];
+  options.LST-ONE.listOf.oneOf       = [ lib.types.str lib.types.int ];
 
   options.LST-OPT.listOf.default     = [];
   options.LST-OPT.listOf.description = "options with one attr";
@@ -148,6 +171,11 @@ lib.simpleOptions {
   options.OPT.options.OPT-LST.listOf      = lib.types.str;
   options.OPT.options.OPT-LST.example     = [];
 
+  options.OPT.options.OPT-ONE.default     = "OPT-ONE";
+  options.OPT.options.OPT-ONE.description = "second level one of";
+  options.OPT.options.OPT-ONE.oneOf       = [ lib.types.str lib.types.int ];
+  options.OPT.options.OPT-ONE.example     = 1;
+
   options.OPT.options.OPT-OPT.default     = {};
   options.OPT.options.OPT-OPT.example     = {};
   options.OPT.options.OPT-OPT.description = "second level options holder";
@@ -171,6 +199,11 @@ lib.simpleOptions {
   options.OPT.options.OPT-OPT.options.OPT-OPT-LST.description = "Third level list of strings str";
   options.OPT.options.OPT-OPT.options.OPT-OPT-LST.listOf      = lib.types.str;
   options.OPT.options.OPT-OPT.options.OPT-OPT-LST.example     = [];
+
+  options.OPT.options.OPT-OPT.options.OPT-OPT-ONE.default     = "OPT-OPT-ONE";
+  options.OPT.options.OPT-OPT.options.OPT-OPT-ONE.description = "third level one of";
+  options.OPT.options.OPT-OPT.options.OPT-OPT-ONE.oneOf       = [ lib.types.str lib.types.int ];
+  options.OPT.options.OPT-OPT.options.OPT-OPT-ONE.example     = 1;
 
   options.OPT.options.OPT-OPT.options.OPT-OPT-TYP.default     = "OPT-OPT-TYP";
   options.OPT.options.OPT-OPT.options.OPT-OPT-TYP.description = "third level str";

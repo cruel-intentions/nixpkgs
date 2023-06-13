@@ -401,19 +401,24 @@ checkConfigOutput '^"ATT"$'         config.ATT.test                     ./simple
 checkConfigOutput '^"ATT-ATT"$'     config.ATT-ATT.foo.test             ./simple-options.nix '{ ATT-ATT.foo.test =          "ATT-ATT"; }'
 checkConfigOutput '^"ATT-ENM"$'     config.ATT-ENM.test                 ./simple-options.nix '{ ATT-ENM.test =              "ATT-ENM"; }'
 checkConfigOutput '^"ATT-LST"$'     config.ATT-LST.test.0               ./simple-options.nix '{ ATT-LST.test = [            "ATT-LST" ]; }'
+checkConfigOutput '^"ATT-ONE"$'     config.ATT-ONE.test                 ./simple-options.nix '{ ATT-ONE.test =              "ATT-ONE"; }'
 checkConfigOutput '^"ATT-OPT-TYP"$' config.ATT-OPT.test.ATT-OPT-TYP     ./simple-options.nix '{ ATT-OPT.test.ATT-OPT-TYP =  "ATT-OPT-TYP"; }'
 checkConfigOutput '^"ENM"$'         config.ENM                          ./simple-options.nix
 checkConfigOutput '^"LST"$'         config.LST.0                        ./simple-options.nix
 checkConfigOutput '^"LST-ATT"$'     config.LST-ATT.0.test               ./simple-options.nix '{ LST-ATT = [ { test =        "LST-ATT";} ]; }'
 checkConfigOutput '^"LST-ENM"$'     config.LST-ENM.0                    ./simple-options.nix '{ LST-ENM = [                 "LST-ENM" ]; }'
 checkConfigOutput '^"LST-LST"$'     config.LST-LST.0.0                  ./simple-options.nix '{ LST-LST = [ [               "LST-LST" ] ]; }'
+checkConfigOutput '^"LST-ONE"$'     config.LST-ONE.0                    ./simple-options.nix '{ LST-ONE = [                 "LST-ONE" ]; }'
 checkConfigOutput '^"LST-OPT-TYP"$' config.LST-OPT.0.LST-OPT-TYP        ./simple-options.nix '{ LST-OPT = [ { LST-OPT-TYP = "LST-OPT-TYP"; } ]; }'
+checkConfigOutput '^"ONE"$'         config.ONE                          ./simple-options.nix
 checkConfigOutput '^"OPT-ATT"$'     config.OPT.OPT-ATT.test             ./simple-options.nix
 checkConfigOutput '^"OPT-ENM"$'     config.OPT.OPT-ENM                  ./simple-options.nix
 checkConfigOutput '^"OPT-LST"$'     config.OPT.OPT-LST.0                ./simple-options.nix
+checkConfigOutput '^"OPT-ONE"$'     config.OPT.OPT-ONE                  ./simple-options.nix
 checkConfigOutput '^"OPT-OPT-ATT"$' config.OPT.OPT-OPT.OPT-OPT-ATT.test ./simple-options.nix
 checkConfigOutput '^"OPT-OPT-ENM"$' config.OPT.OPT-OPT.OPT-OPT-ENM      ./simple-options.nix
 checkConfigOutput '^"OPT-OPT-LST"$' config.OPT.OPT-OPT.OPT-OPT-LST.0    ./simple-options.nix
+checkConfigOutput '^"OPT-OPT-ONE"$' config.OPT.OPT-OPT.OPT-OPT-ONE      ./simple-options.nix
 checkConfigOutput '^"OPT-OPT-TYP"$' config.OPT.OPT-OPT.OPT-OPT-TYP      ./simple-options.nix
 checkConfigOutput '^"OPT-TYP"$'     config.OPT.OPT-TYP                  ./simple-options.nix
 checkConfigOutput '^"TYP"$'         config.TYP                          ./simple-options.nix
