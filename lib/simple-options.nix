@@ -71,6 +71,8 @@ let
         then listOf anything else
       if type ? default && typeOf type.default == "null"
         then nullOr anything else
+      if type ? default && typeOf type.default == "path"
+        then path else
       if type ? default && typeOf type.default == "string"
         then str else
       throw ''${concatStringsSep "." breadcrumb} has no attr _type|${typeAttr}|${attrAttr}|${listAttr}|${nullAttr}|${subMAttr}'';
@@ -116,7 +118,7 @@ let
         result' = result // (
           if  optDef ? ${descAttr}
           then { description = lib.mdDoc optDef.${descAttr}; }
-          else  {});
+          else {});
     in
       if debug then
         trace ''

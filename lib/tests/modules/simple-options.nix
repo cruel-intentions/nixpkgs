@@ -211,6 +211,9 @@ lib.simpleOptions {
   options.OPT.options.OPT-OPT.options.OPT-OPT-TYP.example     = "some string";
 
   # Inter Type
+  options.TYP-ATT.default     =  {};
+  options.TYP-ATT.description = "attr option";
+
   options.TYP-BOO.default     = true;
   options.TYP-BOO.description = "bool option";
 
@@ -226,11 +229,11 @@ lib.simpleOptions {
   options.TYP-NUL.default     =  null;
   options.TYP-NUL.description = "null option";
 
-  options.TYP-ATT.default     =  {};
-  options.TYP-ATT.description = "attr option";
-
   options.TYP-PKG.default     =  (import <nixpkgs> {}).emptyFile;
   options.TYP-PKG.description = "pkg option";
+
+  options.TYP-PTH.default     =  ./.;
+  options.TYP-PTH.description = "path option";
 
   options.TYP-STR.default     = "TYP-STR";
   options.TYP-STR.description = "string option";
