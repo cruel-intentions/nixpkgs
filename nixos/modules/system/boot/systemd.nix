@@ -256,14 +256,14 @@ lib.simpleOptions {
       Target that should be started when Ctrl-Alt-Delete is pressed.
     '';
 
-    globalEnvironment.attrsOf = with types; nullOr (oneOf [ str path package ]);
+    globalEnvironment.attrsOf.nullOr.oneOf = with types; [ str path package ];
     globalEnvironment.default = {};
     globalEnvironment.example = { TZ = "CET"; };
     globalEnvironment.mdDoc   =  ''
       Environment variables passed to *all* systemd units.
     '';
 
-    managerEnvironment.attrsOf = with types; nullOr (oneOf [ str path package ]);
+    managerEnvironment.attrsOf.nullOr.oneOf = with types; [ str path package ];
     managerEnvironment.default = {};
     managerEnvironment.example = { SYSTEMD_LOG_LEVEL = "debug"; };
     managerEnvironment.mdDoc =  ''

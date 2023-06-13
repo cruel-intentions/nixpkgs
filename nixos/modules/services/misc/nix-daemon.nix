@@ -148,7 +148,7 @@ lib.simpleOptions {
       };
 
       daemonCPUSchedPolicy = {
-        type    = types.enum [ "other" "batch" "idle" ];
+        enum    = [ "other" "batch" "idle" ];
         default = "other";
         example = "batch";
         mdDoc   = ''
@@ -178,7 +178,7 @@ lib.simpleOptions {
       };
 
       daemonIOSchedClass = {
-        type = types.enum [ "best-effort" "idle" ];
+        enum    = [ "best-effort" "idle" ];
         default = "best-effort";
         example = "idle";
         mdDoc   = ''
@@ -223,7 +223,7 @@ lib.simpleOptions {
               '';
             };
             protocol = {
-              type    = types.enum [ null "ssh" "ssh-ng" ];
+              enum    = [ null "ssh" "ssh-ng" ];
               default = "ssh";
               example = "ssh-ng";
               mdDoc   = ''
@@ -390,24 +390,24 @@ lib.simpleOptions {
       registry = {
         attrsOf = types.submodule (
           let
-            referenceAttrs = with types; attrsOf (oneOf [
+            referenceTypes = with types; [
               str
               int
               bool
               path
               package
-            ]);
+            ];
           in
           { config, name, ... }:
           lib.simpleOptions {
             options = {
               from = {
-                type    = referenceAttrs;
+                attrsOf.oneOf = referenceTypes;
                 example = { type = "indirect"; id = "nixpkgs"; };
                 mdDoc   = "The flake reference to be rewritten.";
               };
               to = {
-                type    = referenceAttrs;
+                attrsOf.oneOf = referenceTypes;
                 example = { type = "github"; owner = "my-org"; repo = "my-nixpkgs"; };
                 mdDoc   = "The flake reference {option}`from` is rewritten to.";
               };
@@ -462,7 +462,7 @@ lib.simpleOptions {
 
         options = {
           max-jobs = mkOption {
-            type    = types.either types.int (types.enum [ "auto" ]);
+            oneOf   = [ types.int (types.enum [ "auto" ])];
             default = "auto";
             example = 64;
             mdDoc   = ''
@@ -499,7 +499,7 @@ lib.simpleOptions {
           };
 
           sandbox = {
-            type    = types.either types.bool (types.enum [ "relaxed" ]);
+            oneOf   = [types.bool (types.enum [ "relaxed" ])];
             default = true;
             mdDoc   = ''
               If set, Nix will perform builds in a sandboxed environment that it
