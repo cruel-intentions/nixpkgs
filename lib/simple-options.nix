@@ -87,6 +87,7 @@ let
         result
       else result;
 
+  toTypes   = breadcrumb: types: lib.lists.imap0 (i: v: toType (breadcrumb ++ [(toString i)]) v) types;
   toOption  = breadcrumb: optName: optDef:
     let result =
       if typeOf breadcrumb != "list"
@@ -100,7 +101,7 @@ let
       if optDef ? ${enumAttr}
         then removeAttrs optDef [descAttr enumAttr] // { type = enum optDef.${enumAttr}; } else
       if optDef ? ${oneOAttr}
-        then removeAttrs optDef [descAttr oneOAttr] // { type = oneOf optDef.${oneOAttr}; } else
+        then removeAttrs optDef [descAttr oneOAttr] // { type = oneOf       (toTypes   (breadcrumb ++ [optName oneOAttr]) optDef.${oneOAttr}); } else
       if optDef ? ${attrAttr}
         then removeAttrs optDef [descAttr attrAttr] // { type = lazyAttrsOf (toType    (breadcrumb ++ [optName attrAttr]) optDef.${attrAttr}); } else
       if optDef ? ${listAttr}
