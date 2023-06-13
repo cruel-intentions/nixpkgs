@@ -46,15 +46,15 @@ let
       if type ? ${enumAttr}
         then enum type.${enumAttr} else
       if type ? ${oneOAttr}
-        then oneOf type.${oneOAttr} else
+        then oneOf       (toTypes   (breadcrumb ++ [oneOAttr]) type.${oneOAttr}) else
       if type ? ${attrAttr}
-        then lazyAttrsOf (toType    (breadcrumb ++ [attrAttr]) type."${attrAttr}") else
+        then lazyAttrsOf (toType    (breadcrumb ++ [attrAttr]) type.${attrAttr}) else
       if type ? ${listAttr}
-        then listOf      (toType    (breadcrumb ++ [listAttr]) type."${listAttr}") else
+        then listOf      (toType    (breadcrumb ++ [listAttr]) type.${listAttr}) else
       if type ? ${nullAttr}
-        then nullOr      (toType    (breadcrumb ++ [nullAttr]) type."${nullAttr}") else
+        then nullOr      (toType    (breadcrumb ++ [nullAttr]) type.${nullAttr}) else
       if type ? ${subMAttr}
-        then submodule   (toOptions (breadcrumb ++ [subMAttr]) type."${subMAttr}") else
+        then submodule   (toOptions (breadcrumb ++ [subMAttr]) type.${subMAttr}) else
       if type ? default && (lib.isDerivation type.default)
         then package else
       if type ? default && typeOf type.default == "set" && type.default ? _type
